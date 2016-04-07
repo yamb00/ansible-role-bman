@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  author: Micha Lerch
+  description: 
+  license: license (GPLv2, CC-BY, etc)
+  min_ansible_version: 1.2
+  platforms:
+  - name: centos
+    versions:
+    - all
+    - 5
+    - 6
+    - 7
+  - name: Ubuntu
+    versions:
+    - trusty
+  categories:
+    - database
+    - database:sql  
+dependencies: []

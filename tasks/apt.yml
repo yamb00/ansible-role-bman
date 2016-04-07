@@ -1,0 +1,11 @@
+---
+- name: install packages apt
+  apt: >
+    name={{ item }}
+    install_recommends=yes
+    state=present
+  with_items:
+    - lsb-release
+    - pigz
+    - php5-mysql 
+    - php5

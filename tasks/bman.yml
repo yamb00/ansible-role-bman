@@ -1,0 +1,49 @@
+---
+- name: check brman installed
+  stat: >
+    path=/usr/local/{{ brman_tarball | basename | replace('.tar.gz','') }}
+  register: brman_st
+
+- name: get brman zip
+  get_url: >
+    url='{{ brman_tarball }}'
+    dest='/tmp/'
+  when: brman_st.stat.exists == False
+
+- name: unpack brman zip  
+  shell: "tar -zxvf /tmp/{{ brman_tarball | basename }} -C {{ brman_install_path }}"
+  when: brman_st.stat.exists == False
+
+- name: set /usr/local/brman symlink
+  file: >
+    src="/usr/local/{{ brman_tarball | basename | replace('.tar.gz','') }}"
+    dest={{ brman_symlink }}
+    state=link
+
+- name: set /usr/local/bin/brman symlink
+  file: >
+    src='{{ brman_symlink }}/bin/fromdual_bman'
+    dest={{ brman_bin_symlink }}
+    state=link
+
+- name: create brman config path
+  file: >
+    path={{ brman_config_path }}
+    state=directory
+
+- name: create brman configs
+  template: >
+    src=brman_config_template.j2
+    dest='{{ brman_config_path }}/{{ item.file.name }}'  
+  with_items: brman_config
+  when: brman_config is defined
+
+- name: set brman cronjobs
+  cron: >
+    name={{ item.name }}
+    hour={{ item.hour }}
+    minute={{ item.minute }}
+    job='brman --config={{ item.config_file }} > /dev/null'
+    user=root
+    state=present
+  with_items: brman_crons

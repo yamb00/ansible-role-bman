@@ -1,0 +1,7 @@
+---
+
+- include: apt.yml
+  when: ansible_os_family == 'Debian'  
+- include: percona.yml
+- include: bman.yml
+- include: php.yml

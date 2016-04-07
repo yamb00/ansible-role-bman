@@ -1,0 +1,29 @@
+---
+- name: Check if Package is installed
+  command: dpkg-query -l percona-xtrabackup
+  register: is_installed
+  ignore_errors: yes
+
+- name: get percona repository
+  get_url: >
+    url={{ percona_repo }}
+    dest=/tmp/
+  when: is_installed.rc == 1
+
+- name: install percona repository
+  apt: >
+    deb='/tmp/{{ percona_repo | basename }}'
+  when: is_installed.rc == 1
+
+- name: cleanup tmp files
+  file: >
+    path='/tmp/{{ percona_repo | basename }}'
+    state=absent
+  when: is_installed.rc == 1
+
+- name: install percona xtrabackup
+  apt: >
+    name=percona-xtrabackup-22
+    update_cache=yes
+    state=present
+  when: is_installed.rc == 1

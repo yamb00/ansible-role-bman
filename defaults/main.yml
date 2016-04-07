@@ -1,0 +1,17 @@
+---
+# defaults file for yamb00.mysql_brman
+brman_tarball: "https://support.fromdual.com/admin/download/fromdual_brman-1.2.2.tar.gz"
+brman_install_path: "/usr/local"
+brman_symlink: "/usr/local/brman"
+brman_bin_symlink: "/usr/local/bin/brman"
+
+# percona
+
+percona_repo: "https://repo.percona.com/apt/percona-release_0.1-3.{{ ansible_lsb.codename }}_all.deb"
+
+# php
+
+php_ini: "/etc/php5/cli/php.ini"
+
+# config
+brman_config_path: /etc/brman

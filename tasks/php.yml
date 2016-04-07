@@ -1,0 +1,6 @@
+---
+- name: php.ini | set EGPCS
+  lineinfile: >
+    dest={{ php_ini }}
+    regexp='^variables_order ='
+    line='variables_order = "EGPCS"'
