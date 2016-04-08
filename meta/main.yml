@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Micha Lerch
-  description: 
+  description: install fromdual.com backup manager aka bman
   license: license (GPLv2, CC-BY, etc)
   min_ansible_version: 1.2
   platforms:
