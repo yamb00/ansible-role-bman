@@ -9,3 +9,4 @@
     - pigz
     - php5-mysql 
     - php5
+    - percona-xtrabackup

@@ -1,49 +1,49 @@
 ---
-- name: check brman installed
+- name: check bman installed
   stat: >
-    path=/usr/local/{{ brman_tarball | basename | replace('.tar.gz','') }}
-  register: brman_st
+    path=/usr/local/{{ bman_tarball | basename | replace('.tar.gz','') }}
+  register: bman_st
 
-- name: get brman zip
+- name: get bman zip
   get_url: >
-    url='{{ brman_tarball }}'
+    url='{{ bman_tarball }}'
     dest='/tmp/'
-  when: brman_st.stat.exists == False
+  when: bman_st.stat.exists == False
 
-- name: unpack brman zip  
-  shell: "tar -zxvf /tmp/{{ brman_tarball | basename }} -C {{ brman_install_path }}"
-  when: brman_st.stat.exists == False
+- name: unpack bman zip  
+  shell: "tar -zxvf /tmp/{{ bman_tarball | basename }} -C {{ bman_install_path }}"
+  when: bman_st.stat.exists == False
 
-- name: set /usr/local/brman symlink
+- name: set /usr/local/bman symlink
   file: >
-    src="/usr/local/{{ brman_tarball | basename | replace('.tar.gz','') }}"
-    dest={{ brman_symlink }}
+    src="/usr/local/{{ bman_tarball | basename | replace('.tar.gz','') }}"
+    dest={{ bman_symlink }}
     state=link
 
-- name: set /usr/local/bin/brman symlink
+- name: set /usr/local/bin/bman symlink
   file: >
-    src='{{ brman_symlink }}/bin/fromdual_bman'
-    dest={{ brman_bin_symlink }}
+    src='{{ bman_symlink }}/bin/fromdual_bman'
+    dest={{ bman_bin_symlink }}
     state=link
 
-- name: create brman config path
+- name: create bman config path
   file: >
-    path={{ brman_config_path }}
+    path={{ bman_config_path }}
     state=directory
 
-- name: create brman configs
+- name: create bman configs
   template: >
-    src=brman_config_template.j2
-    dest='{{ brman_config_path }}/{{ item.file.name }}'  
-  with_items: brman_config
-  when: brman_config is defined
+    src=bman_config_template.j2
+    dest='{{ bman_config_path }}/{{ item.file.name }}'  
+  with_items: bman_config
+  when: bman_config is defined
 
-- name: set brman cronjobs
+- name: set bman cronjobs
   cron: >
     name={{ item.name }}
     hour={{ item.hour }}
     minute={{ item.minute }}
-    job='brman --config={{ item.config_file }} > /dev/null'
+    job='bman --config={{ bman_config_path }}/{{ item.config_file }} > /dev/null'
     user=root
     state=present
-  with_items: brman_crons
+  with_items: bman_crons
