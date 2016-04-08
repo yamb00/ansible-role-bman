@@ -34,7 +34,9 @@
 - name: create bman configs
   template: >
     src=bman_config_template.j2
-    dest='{{ bman_config_path }}/{{ item.file.name }}'  
+    dest='{{ bman_config_path }}/{{ item.file.name }}'
+    owner=root
+    mode=0400
   with_items: bman_config
   when: bman_config is defined
 
