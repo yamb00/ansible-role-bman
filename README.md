@@ -1,42 +1,71 @@
-Role Name
-=========
+## yamb00 - bman
 
 This Role install Backup Manager by fromdual.com
+http://fromdual.com/mysql-backup-manager-mysql_bman
 
-Requirements
-------------
+#### Requirements
 
 MySQL Server for Collection Feature
 
-Role Variables
---------------
+#### Platforms
 
-Default Variables
+Currently it's been developed for, and tested on Ubuntu. It is assumed to work on other Debian distributions as well.
 
-brman_tarball: "https://support.fromdual.com/admin/download/fromdual_brman-1.2.2.tar.gz"
-brman_install_path: "/usr/local"
-brman_symlink: "/usr/local/brman"
-brman_bin_symlink: "/usr/local/bin/brman"
+#### Role Variables
 
+##### Default Variables
 
-percona_repo: "https://repo.percona.com/apt/percona-release_0.1-3.{{ ansible_lsb.codename }}_all.deb"
+- `brman_tarball` - bman tarball url
+- `brman_install_path` - install path
+- `brman_symlink` - symlink folder
+- `brman_bin_symlink` - symlink in /usr/local/bin
 
-php_ini: "/etc/php5/cli/php.ini"
+- `php_ini` - location of cli php.ini
+- `bman_config_path` - path of config files
 
+##### Config Files
 
-Dependencies
-------------
+```yml
+bman_config:
+  - file:
+      name: full.cfg
+      policy: daily
+      target: root/@127.0.0.1:3306
+      type: full
+      compress: 9
+      backupdir: /srv/backup
+      mode: physical
+      catalog: root/@127.0.0.1:3306
+      instance-name: fullbackup
+  - file:
+      name: cleanup.cfg
+      policy: daily
+      type: cleanup
+      retention: 7
+```
+##### Cronjobs
 
+```yml
+bman_crons:
+  - name: full backup
+    config_file: full.cfg
+    hour: 2
+    minute: 00
+  - name: cleanup
+    config_file: cleanup.cfg
+    hour: 0
+    minute: 15
+```
 
-Example Playbook
-----------------
+### Example Playbook
+
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: yamb00.bman }
-
+```yml
+- hosts: servers
+  roles:
+     - { role: yamb00.bman }
+```
 License
 -------
 
