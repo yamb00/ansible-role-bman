@@ -11,3 +11,7 @@ php_ini: "/etc/php5/cli/php.ini"
 
 # config
 bman_config_path: /etc/bman
+
+# log
+bman_log_path: /var/log/bman
+bman_log_rotation: 5

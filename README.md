@@ -23,6 +23,9 @@ Currently it's been developed for, and tested on Ubuntu. It is assumed to work o
 - `php_ini` - location of cli php.ini
 - `bman_config_path` - path of config files
 
+- `bman_log_path` - location of logfiles for logrotation
+- `bman_log_rotation` - rotation count before being removed
+
 ##### Config Files
 
 ```yml

@@ -50,3 +50,8 @@
     state=present
   with_items: bman_crons
   when: bman_crons is defined
+
+- name: set logration
+  template: >
+    src=logrotate_bman.j2
+    dest=/etc/logrotate.d/bman
