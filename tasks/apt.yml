@@ -8,5 +8,5 @@
     - lsb-release
     - pigz
     - php5-mysql 
-    - php5
+    - php5-cli    
     - percona-xtrabackup
