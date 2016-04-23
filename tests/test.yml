@@ -1,7 +1,27 @@
 ---
-
-- hosts: all
-  remote_user: root
-  sudo: yes
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: build ubuntu 14.04 docker image
+      docker_image: >
+        name=my/ubuntu_14.04
+        path=./
+        dockerfile=dockerfile_ubuntu_14.04
+        state=present
+      tags: docker
+    
+    - name: run docker images
+      docker: 
+        name: '{{ item.name }}'
+        hostname: '{{ item.name }}'
+        image: '{{ item.image }}'
+        command: "bash"
+        state: started
+      with_items:
+          - { name: 'ubuntu', image: 'my/ubuntu_14.04' }
+      tags: docker
+  
+- hosts: ubuntu_14_04
+  connection: docker
   roles:
-      - ansible-role-bman
+    - yamb00.bman
